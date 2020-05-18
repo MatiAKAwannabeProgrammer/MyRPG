@@ -11,7 +11,7 @@ private:
 
 public:
 	Map();
-	void drawMap(sf::RenderWindow &window);
-
+	void drawMap(sf::RenderWindow& window);
+	void changeMap();
 };
 #endif

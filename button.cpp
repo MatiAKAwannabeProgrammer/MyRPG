@@ -7,6 +7,7 @@ Button::Button()
 	buttonRectangle.setTexture(&buttonTexture);
 	buttonRectangle.setPosition(sf::Vector2f(208, 330));
 	buttonRectangle.setSize(sf::Vector2f(85, 29));
+	buttonBounds = buttonRectangle.getGlobalBounds();
 }
 
 void Button::drawButton(sf::RenderWindow& window)

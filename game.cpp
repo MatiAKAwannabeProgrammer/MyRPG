@@ -23,6 +23,11 @@ void Game::pollEvents()
 		bulletClock.restart();
 		isFired = true;
 	}
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mouseOnButton() == true)
+	{
+		map.changeMap();
+	}
 }
 
 void Game::update()
@@ -43,6 +48,8 @@ void Game::update()
 
 	updateTheBullet();
 	isFired = false;
+
+	mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 }
 
 void Game::render()
@@ -120,9 +127,20 @@ bool Game::isAtTheDoor()
 void Game::initText()
 {
 	font.loadFromFile("./content/arial_narrow_7.ttf");
+
+	// EnterHouseText button.
 	enterHouseText.setString("Enter the house");
 	enterHouseText.setPosition(sf::Vector2f(210, 337));
 	enterHouseText.setFont(font);
 	enterHouseText.setFillColor(sf::Color(65, 53, 53));
 	enterHouseText.setCharacterSize(12);
+}
+
+bool Game::mouseOnButton()
+{
+	if (enterHouseButton.buttonBounds.contains(mousePos))
+		return true;
+
+	else
+		return false;
 }

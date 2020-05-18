@@ -17,18 +17,19 @@ private:
 	sf::Vector2f bulletPos;
 	std::vector<Bullet> bulletVector;
 	sf::Vector2f currentPlayerPos;
+	sf::Vector2f mousePos;
 
 	// OBJECTS
 	sf::RenderWindow window;
 	Player player;
 	Map map;
-	Button enterHouseButton;
 	sf::Event event;
 	sf::Clock deltaClock;
 	sf::Time bulletTime;
 	sf::Clock bulletClock;
-	sf::Text enterHouseText;
 	sf::Font font;
+	sf::Text enterHouseText;
+	Button enterHouseButton;
 
 public:
 	Game();
@@ -41,5 +42,6 @@ public:
 	void drawTheBullet();
 	bool isAtTheDoor();
 	void initText();
+	bool mouseOnButton();
 };
 #endif

@@ -7,7 +7,12 @@ Map::Map()
 	mapModel.setTexture(mapTexture);
 }
 
-void Map::drawMap(sf::RenderWindow &window)
+void Map::drawMap(sf::RenderWindow& window)
 {
 	window.draw(mapModel);
+}
+
+void Map::changeMap()
+{
+	mapTexture.loadFromFile("./content/house.png");
 }

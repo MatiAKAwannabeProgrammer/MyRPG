@@ -11,11 +11,10 @@ private:
 	float speed;
 
 public:
-	Bullet(sf::Vector2f &playerPosition);
-	void drawBullet(sf::RenderWindow &window);
-	void bulletMovement(float &deltaTime);
+	Bullet(sf::Vector2f& playerPosition);
+	void drawBullet(sf::RenderWindow& window);
+	void bulletMovement(float& deltaTime);
 	void getBulletPos();
 	sf::Vector2f bulletPosition;
-
 };
 #endif
