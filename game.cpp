@@ -7,6 +7,7 @@ Game::Game()
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(true);
 	initText();
+	currentLoc = "open";
 }
 
 void Game::pollEvents()
@@ -27,6 +28,7 @@ void Game::pollEvents()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mouseOnButton() == true)
 	{
 		map.changeMap();
+		currentLoc = "house";
 	}
 }
 
@@ -49,6 +51,7 @@ void Game::update()
 	updateTheBullet();
 	isFired = false;
 
+	// Update the mouse position.
 	mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 }
 
@@ -61,11 +64,7 @@ void Game::render()
 	map.drawMap(window);
 	player.drawPlayer(window);
 	drawTheBullet();
-	if (isAtTheDoor())
-	{
-		enterHouseButton.drawButton(window);
-		window.draw(enterHouseText);
-	}
+	currentLocation();
 
 	// Display the picture.
 	window.display();
@@ -115,9 +114,10 @@ void Game::drawTheBullet()
 	}
 }
 
-bool Game::isAtTheDoor()
+bool Game::isAtTheDoor(Door& door)
 {
-	if (currentPlayerPos.x >= 210 && currentPlayerPos.x <= 250 && currentPlayerPos.y >= 350 && currentPlayerPos.y <= 395)
+	//if (currentPlayerPos.x >= 210 && currentPlayerPos.x <= 250 && currentPlayerPos.y >= 350 && currentPlayerPos.y <= 395)
+	if (door.doorBounds.contains(currentPlayerPos))
 		return true;
 
 	else
@@ -134,13 +134,44 @@ void Game::initText()
 	enterHouseText.setFont(font);
 	enterHouseText.setFillColor(sf::Color(65, 53, 53));
 	enterHouseText.setCharacterSize(12);
+
+	//ExitHouseText
+	exitHouseText.setString("Enter the house");
+	exitHouseText.setPosition(sf::Vector2f(210, 337));
+	exitHouseText.setFont(font);
+	exitHouseText.setFillColor(sf::Color(65, 53, 53));
+	exitHouseText.setCharacterSize(12);
 }
 
 bool Game::mouseOnButton()
 {
-	if (enterHouseButton.buttonBounds.contains(mousePos))
+	if (houseButton.buttonBounds.contains(mousePos))
 		return true;
 
 	else
 		return false;
+}
+
+void Game::currentLocation()
+{
+	// Check the current localtion.
+	if (currentLoc == "open")
+	{
+		door.setDoorPosition(currentLoc);
+		if (isAtTheDoor(door))
+		{
+			houseButton.drawButton(window);
+			window.draw(enterHouseText);
+		}
+	}
+
+	if (currentLoc == "house")
+	{
+		door.setDoorPosition(currentLoc);
+		if (isAtTheDoor(door))
+		{
+			houseButton.drawButton(window);
+			window.draw(exitHouseText);
+		}
+	}
 }

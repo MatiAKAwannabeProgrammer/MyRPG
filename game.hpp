@@ -3,9 +3,11 @@
 
 #include "bullet.hpp"
 #include "button.hpp"
+#include "door.hpp"
 #include "map.hpp"
 #include "player.hpp"
 #include <SFML/Graphics.hpp>
+#include <string>
 #include <vector>
 
 class Game
@@ -18,6 +20,7 @@ private:
 	std::vector<Bullet> bulletVector;
 	sf::Vector2f currentPlayerPos;
 	sf::Vector2f mousePos;
+	std::string currentLoc;
 
 	// OBJECTS
 	sf::RenderWindow window;
@@ -29,7 +32,9 @@ private:
 	sf::Clock bulletClock;
 	sf::Font font;
 	sf::Text enterHouseText;
-	Button enterHouseButton;
+	sf::Text exitHouseText;
+	Button houseButton;
+	Door door;
 
 public:
 	Game();
@@ -40,8 +45,9 @@ public:
 	void createTheBullet();
 	void updateTheBullet();
 	void drawTheBullet();
-	bool isAtTheDoor();
+	bool isAtTheDoor(Door& door);
 	void initText();
 	bool mouseOnButton();
+	void currentLocation();
 };
 #endif
