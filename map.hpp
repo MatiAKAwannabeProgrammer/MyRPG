@@ -12,6 +12,6 @@ private:
 public:
 	Map();
 	void drawMap(sf::RenderWindow& window);
-	void changeMap();
+	void changeMap(std::string& currentLoc);
 };
 #endif

@@ -15,7 +15,7 @@ void Door::setDoorPosition(std::string& currentLoc)
 
 	if (currentLoc == "house")
 	{
-		doorArea.setPosition(sf::Vector2f(10, 350));
+		doorArea.setPosition(sf::Vector2f(40, 190));
 		doorBounds = doorArea.getGlobalBounds();
 	}
 }

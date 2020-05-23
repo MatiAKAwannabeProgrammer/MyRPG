@@ -4,10 +4,14 @@ Game::Game()
 {
 	window.create(sf::VideoMode(544, 480), "Best RPG EU");
 	isFired = false;
+	isClicked = true;
 	window.setFramerateLimit(60);
 	window.setKeyRepeatEnabled(true);
 	initText();
 	currentLoc = "open";
+	window.setMouseCursorVisible(false);
+	window.setMouseCursorGrabbed(true); // This is cool, however I might want to
+										//add and exit button at some point.
 }
 
 void Game::pollEvents()
@@ -25,10 +29,25 @@ void Game::pollEvents()
 		isFired = true;
 	}
 
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && mouseOnButton() == true)
+	// If the player is at the door, register mouse clicks.
+	if (isAtTheDoor(door))
 	{
-		map.changeMap();
-		currentLoc = "house";
+		window.setMouseCursorVisible(true);
+		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "open")
+		{
+			event.type = event.MouseButtonReleased;
+			map.changeMap(currentLoc);
+			player.changePlayerPos(newPlayerPos);
+			currentLoc = "house";
+		}
+
+		else if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "house")
+		{
+			event.type = event.MouseButtonReleased;
+			map.changeMap(currentLoc);
+			player.changePlayerPos(newPlayerPos);
+			currentLoc = "open";
+		}
 	}
 }
 
@@ -37,7 +56,6 @@ void Game::update()
 	// Start the timers.
 	deltaTime = deltaClock.restart().asSeconds();
 	bulletTime = bulletClock.getElapsedTime();
-
 	// Update and initialize the player position.
 	player.getPlayerPos();
 	currentPlayerPos = player.playerPosition;
@@ -50,7 +68,6 @@ void Game::update()
 
 	updateTheBullet();
 	isFired = false;
-
 	// Update the mouse position.
 	mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 }
@@ -116,7 +133,6 @@ void Game::drawTheBullet()
 
 bool Game::isAtTheDoor(Door& door)
 {
-	//if (currentPlayerPos.x >= 210 && currentPlayerPos.x <= 250 && currentPlayerPos.y >= 350 && currentPlayerPos.y <= 395)
 	if (door.doorBounds.contains(currentPlayerPos))
 		return true;
 
@@ -136,8 +152,8 @@ void Game::initText()
 	enterHouseText.setCharacterSize(12);
 
 	//ExitHouseText
-	exitHouseText.setString("Enter the house");
-	exitHouseText.setPosition(sf::Vector2f(210, 337));
+	exitHouseText.setString("Exit the house");
+	exitHouseText.setPosition(sf::Vector2f(20, 157));
 	exitHouseText.setFont(font);
 	exitHouseText.setFillColor(sf::Color(65, 53, 53));
 	exitHouseText.setCharacterSize(12);
@@ -154,14 +170,15 @@ bool Game::mouseOnButton()
 
 void Game::currentLocation()
 {
-	// Check the current localtion.
+	// Check the current location.
 	if (currentLoc == "open")
 	{
 		door.setDoorPosition(currentLoc);
 		if (isAtTheDoor(door))
 		{
-			houseButton.drawButton(window);
+			houseButton.drawButton(window, currentLoc);
 			window.draw(enterHouseText);
+			newPlayerPos = sf::Vector2f(40.f, 195.f);
 		}
 	}
 
@@ -170,8 +187,9 @@ void Game::currentLocation()
 		door.setDoorPosition(currentLoc);
 		if (isAtTheDoor(door))
 		{
-			houseButton.drawButton(window);
+			houseButton.drawButton(window, currentLoc);
 			window.draw(exitHouseText);
+			newPlayerPos = sf::Vector2f(225.f, 375.f);
 		}
 	}
 }

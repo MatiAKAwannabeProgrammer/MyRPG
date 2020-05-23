@@ -1,0 +1,30 @@
+// I have managed to get the actual position of the mouse, I just have
+to pass into the getPosition() my window object.
+
+When I change the map I need to delete the button.
+I will have to create them dynamically
+
+I might also want to stop checking the position of the player, or change
+it based on the current room he is in.
+
+
+I could pass a variable to the changeMap() function, make a bunch of
+if statements over that that check which map is supposed to load
+
+create a changeMapHouse()
+withing it:
+	- change the map image,
+	- delete the button,
+	- change the coordinates of the exit/entrace
+
+The issue with not changing the map properly and position exists
+becuase I'm not able to receive just ONE mouse click.
+It registeres multiple of them and that messes everything up.
+If i get that wot work, my only real problem is changing the
+position of the button inside the house.
+ I WAS RIGHT ALL ALONG!
+
+
+ The best way to pass in a mouse event:
+ event.type == event.MouseButtonPressed && event.mouseButton.button == lmb
+ and then set event type to MouseButtonReleased.

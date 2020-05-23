@@ -10,10 +10,12 @@ private:
 	sf::Texture buttonTexture;
 	sf::Vector2u buttonSize;
 	sf::Text enterHouseText;
+	unsigned int textureWidth;
+	unsigned int textureHeight;
 
 public:
 	Button();
-	void drawButton(sf::RenderWindow& window);
+	void drawButton(sf::RenderWindow& window, std::string currentLoc);
 	sf::FloatRect buttonBounds;
 };
 #endif

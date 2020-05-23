@@ -10,7 +10,18 @@ Button::Button()
 	buttonBounds = buttonRectangle.getGlobalBounds();
 }
 
-void Button::drawButton(sf::RenderWindow& window)
+void Button::drawButton(sf::RenderWindow& window, std::string currentLoc)
 {
+	if (currentLoc == "open")
+	{
+		buttonRectangle.setPosition(sf::Vector2f(208, 330));
+		buttonBounds = buttonRectangle.getGlobalBounds();
+	}
+
+	if (currentLoc == "house")
+	{
+		buttonRectangle.setPosition(sf::Vector2f(15, 150));
+		buttonBounds = buttonRectangle.getGlobalBounds();
+	}
 	window.draw(buttonRectangle);
 }

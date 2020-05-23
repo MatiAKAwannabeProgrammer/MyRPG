@@ -16,11 +16,13 @@ private:
 	// VARIABLES
 	float deltaTime;
 	bool isFired;
+	bool isClicked;
 	sf::Vector2f bulletPos;
 	std::vector<Bullet> bulletVector;
 	sf::Vector2f currentPlayerPos;
 	sf::Vector2f mousePos;
 	std::string currentLoc;
+	sf::Vector2f newPlayerPos;
 
 	// OBJECTS
 	sf::RenderWindow window;
@@ -35,6 +37,7 @@ private:
 	sf::Text exitHouseText;
 	Button houseButton;
 	Door door;
+	sf::Cursor cursor;
 
 public:
 	Game();
@@ -49,5 +52,7 @@ public:
 	void initText();
 	bool mouseOnButton();
 	void currentLocation();
+	void changePlayerPos();
+	void changeLocation(std::string newLocation);
 };
 #endif

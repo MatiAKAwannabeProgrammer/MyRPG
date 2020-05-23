@@ -1,0 +1,6 @@
+[] I need to disable buttons if the player is not in position.
+	- this also creates a bug where if button is pressed,
+	it moves the player not to the door in the next room,
+	but to <0,0> coords.
+
+I need to enable the possibility to exit the house.
