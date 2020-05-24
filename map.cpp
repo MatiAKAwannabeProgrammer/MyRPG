@@ -15,11 +15,8 @@ void Map::drawMap(sf::RenderWindow& window)
 void Map::changeMap(std::string& currentLoc)
 {
 	if (currentLoc == "open")
-	{
 		mapTexture.loadFromFile("./content/house.png");
-	}
+
 	if (currentLoc == "house")
-	{
 		mapTexture.loadFromFile("./content/map.jpg");
-	}
 }

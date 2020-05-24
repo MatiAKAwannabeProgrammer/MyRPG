@@ -3,7 +3,7 @@
 
 Bullet::Bullet(sf::Vector2f& playerPosition)
 {
-	bulletModel.setSize(sf::Vector2f(10, 10));
+	bulletModel.setSize(sf::Vector2f(10.f, 10.f));
 	bulletTexture.loadFromFile("./content/bullet.png");
 	bulletModel.setTexture(&bulletTexture);
 	bulletModel.setPosition(playerPosition.x + 40, playerPosition.y + 15);

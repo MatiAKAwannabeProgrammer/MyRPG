@@ -35,7 +35,9 @@ private:
 	sf::Font font;
 	sf::Text enterHouseText;
 	sf::Text exitHouseText;
+	sf::Text exitGameText;
 	Button houseButton;
+	Button exitGameButton;
 	Door door;
 	sf::Cursor cursor;
 
@@ -51,8 +53,10 @@ public:
 	bool isAtTheDoor(Door& door);
 	void initText();
 	bool mouseOnButton();
+	bool mouseOnExit();
 	void currentLocation();
 	void changePlayerPos();
 	void changeLocation(std::string newLocation);
+	void mouseToCenter();
 };
 #endif

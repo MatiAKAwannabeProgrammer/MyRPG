@@ -9,9 +9,9 @@ Game::Game()
 	window.setKeyRepeatEnabled(true);
 	initText();
 	currentLoc = "open";
+	window.setMouseCursorGrabbed(true);
 	window.setMouseCursorVisible(false);
-	window.setMouseCursorGrabbed(true); // This is cool, however I might want to
-										//add and exit button at some point.
+	mouseToCenter();
 }
 
 void Game::pollEvents()
@@ -41,7 +41,7 @@ void Game::pollEvents()
 			currentLoc = "house";
 		}
 
-		else if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "house")
+		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "house")
 		{
 			event.type = event.MouseButtonReleased;
 			map.changeMap(currentLoc);
@@ -49,6 +49,16 @@ void Game::pollEvents()
 			currentLoc = "open";
 		}
 	}
+
+	if (mouseOnButton())
+		houseButton.buttonHover();
+
+	if (!mouseOnButton())
+		houseButton.buttonNoHover();
+
+	// Exit game button.
+	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnExit() == true)
+		window.close();
 }
 
 void Game::update()
@@ -56,20 +66,20 @@ void Game::update()
 	// Start the timers.
 	deltaTime = deltaClock.restart().asSeconds();
 	bulletTime = bulletClock.getElapsedTime();
+
 	// Update and initialize the player position.
 	player.getPlayerPos();
 	currentPlayerPos = player.playerPosition;
 	player.playerMovement(deltaTime, currentPlayerPos);
 
 	if (isFired)
-	{
 		createTheBullet();
-	}
 
 	updateTheBullet();
 	isFired = false;
 	// Update the mouse position.
 	mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+	// Changing the color of the button.
 }
 
 void Game::render()
@@ -82,6 +92,8 @@ void Game::render()
 	player.drawPlayer(window);
 	drawTheBullet();
 	currentLocation();
+	exitGameButton.drawExitButton(window);
+	window.draw(exitGameText);
 
 	// Display the picture.
 	window.display();
@@ -116,9 +128,7 @@ void Game::updateTheBullet()
 
 		//If the bullet reaches the end of the screen - delete it.
 		if (bulletVector[i].bulletPosition.x > 544)
-		{
 			bulletVector.erase(bulletVector.begin() + i);
-		}
 	}
 }
 
@@ -126,9 +136,7 @@ void Game::drawTheBullet()
 {
 	// Display each bullet.
 	for (unsigned int i = 0; i < bulletVector.size(); i++)
-	{
 		bulletVector[i].drawBullet(window);
-	}
 }
 
 bool Game::isAtTheDoor(Door& door)
@@ -146,22 +154,38 @@ void Game::initText()
 
 	// EnterHouseText button.
 	enterHouseText.setString("Enter the house");
-	enterHouseText.setPosition(sf::Vector2f(210, 337));
+	enterHouseText.setPosition(sf::Vector2f(210.f, 337.f));
 	enterHouseText.setFont(font);
 	enterHouseText.setFillColor(sf::Color(65, 53, 53));
 	enterHouseText.setCharacterSize(12);
 
 	//ExitHouseText
 	exitHouseText.setString("Exit the house");
-	exitHouseText.setPosition(sf::Vector2f(20, 157));
+	exitHouseText.setPosition(sf::Vector2f(20.f, 157.f));
 	exitHouseText.setFont(font);
 	exitHouseText.setFillColor(sf::Color(65, 53, 53));
 	exitHouseText.setCharacterSize(12);
+
+	// exitGameButton
+	exitGameText.setString("Exit");
+	exitGameText.setPosition(sf::Vector2f(510.f, 9.f));
+	exitGameText.setFont(font);
+	exitGameText.setFillColor(sf::Color(65, 53, 53));
+	exitGameText.setCharacterSize(12);
 }
 
 bool Game::mouseOnButton()
 {
 	if (houseButton.buttonBounds.contains(mousePos))
+		return true;
+
+	else
+		return false;
+}
+
+bool Game::mouseOnExit()
+{
+	if (exitGameButton.buttonBounds.contains(mousePos))
 		return true;
 
 	else
@@ -192,4 +216,9 @@ void Game::currentLocation()
 			newPlayerPos = sf::Vector2f(225.f, 375.f);
 		}
 	}
+}
+
+void Game::mouseToCenter()
+{
+	sf::Mouse::setPosition(sf::Vector2i(window.getSize().x / 2, window.getSize().y / 2), window);
 }
