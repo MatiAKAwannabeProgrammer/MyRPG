@@ -39,7 +39,8 @@ private:
 	Button houseButton;
 	Button exitGameButton;
 	Door door;
-	sf::Cursor cursor;
+	sf::Texture cursorTexture;
+	sf::Sprite cursor;
 
 public:
 	Game();
@@ -52,11 +53,12 @@ public:
 	void drawTheBullet();
 	bool isAtTheDoor(Door& door);
 	void initText();
-	bool mouseOnButton();
-	bool mouseOnExit();
+	bool mouseOnButton(Button& button);
 	void currentLocation();
 	void changePlayerPos();
 	void changeLocation(std::string newLocation);
 	void mouseToCenter();
+	void mouseHovering();
+	bool showCursor();
 };
 #endif

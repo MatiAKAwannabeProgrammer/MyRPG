@@ -2,9 +2,9 @@
 
 Button::Button()
 {
-	//buttonRectangle.setFillColor(sf::Color::Blue);
 	buttonTextureNoHover.loadFromFile("./content/button.png");
 	buttonTextureHover.loadFromFile("./content/buttonHover.png");
+
 	buttonRectangle.setTexture(&buttonTextureNoHover);
 	buttonRectangle.setPosition(sf::Vector2f(208.f, 330.f));
 	buttonRectangle.setSize(sf::Vector2f(85.f, 29.f));

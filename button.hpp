@@ -9,10 +9,6 @@ private:
 	sf::RectangleShape buttonRectangle;
 	sf::Texture buttonTextureNoHover;
 	sf::Texture buttonTextureHover;
-	sf::Vector2u buttonSize;
-	sf::Text enterHouseText;
-	unsigned int textureWidth;
-	unsigned int textureHeight;
 
 public:
 	Button();

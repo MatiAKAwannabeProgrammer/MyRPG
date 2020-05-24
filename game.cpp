@@ -12,6 +12,8 @@ Game::Game()
 	window.setMouseCursorGrabbed(true);
 	window.setMouseCursorVisible(false);
 	mouseToCenter();
+	cursorTexture.loadFromFile("./content/cursor.png");
+	cursor.setTexture(cursorTexture);
 }
 
 void Game::pollEvents()
@@ -32,8 +34,7 @@ void Game::pollEvents()
 	// If the player is at the door, register mouse clicks.
 	if (isAtTheDoor(door))
 	{
-		window.setMouseCursorVisible(true);
-		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "open")
+		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton(houseButton) == true && currentLoc == "open")
 		{
 			event.type = event.MouseButtonReleased;
 			map.changeMap(currentLoc);
@@ -41,7 +42,7 @@ void Game::pollEvents()
 			currentLoc = "house";
 		}
 
-		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton() == true && currentLoc == "house")
+		if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton(houseButton) == true && currentLoc == "house")
 		{
 			event.type = event.MouseButtonReleased;
 			map.changeMap(currentLoc);
@@ -50,14 +51,8 @@ void Game::pollEvents()
 		}
 	}
 
-	if (mouseOnButton())
-		houseButton.buttonHover();
-
-	if (!mouseOnButton())
-		houseButton.buttonNoHover();
-
 	// Exit game button.
-	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnExit() == true)
+	if (event.type == event.MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && mouseOnButton(exitGameButton) == true)
 		window.close();
 }
 
@@ -77,9 +72,13 @@ void Game::update()
 
 	updateTheBullet();
 	isFired = false;
+
 	// Update the mouse position.
 	mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+
 	// Changing the color of the button.
+	mouseHovering();
+	cursor.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
 }
 
 void Game::render()
@@ -94,6 +93,7 @@ void Game::render()
 	currentLocation();
 	exitGameButton.drawExitButton(window);
 	window.draw(exitGameText);
+	showCursor();
 
 	// Display the picture.
 	window.display();
@@ -174,18 +174,9 @@ void Game::initText()
 	exitGameText.setCharacterSize(12);
 }
 
-bool Game::mouseOnButton()
+bool Game::mouseOnButton(Button& button)
 {
-	if (houseButton.buttonBounds.contains(mousePos))
-		return true;
-
-	else
-		return false;
-}
-
-bool Game::mouseOnExit()
-{
-	if (exitGameButton.buttonBounds.contains(mousePos))
+	if (button.buttonBounds.contains(mousePos))
 		return true;
 
 	else
@@ -221,4 +212,32 @@ void Game::currentLocation()
 void Game::mouseToCenter()
 {
 	sf::Mouse::setPosition(sf::Vector2i(window.getSize().x / 2, window.getSize().y / 2), window);
+}
+
+void Game::mouseHovering()
+{
+	// Checking if cursor is hovering on the specific buttons.
+	if (mouseOnButton(houseButton))
+		houseButton.buttonHover();
+	if (!mouseOnButton(houseButton))
+		houseButton.buttonNoHover();
+
+	if (mouseOnButton(exitGameButton))
+		exitGameButton.buttonHover();
+	if (!mouseOnButton(exitGameButton))
+		exitGameButton.buttonNoHover();
+}
+
+bool Game::showCursor()
+{
+	if (isAtTheDoor(door))
+	{
+		window.draw(cursor);
+		return true;
+	}
+	else
+	{
+		mouseToCenter();
+		return false;
+	}
 }
